@@ -1,2 +1,6 @@
-## Front Page Content
-`beautifulhugo` supports content on your front page. Edit `/content/_index.md` to change what appears here. Delete `/content/_index.md` if you don't want any content here.
+# My Personal Notes
+### Using this site to write down any thought while doing HTB
+
+I think by writing every retired box I did, I can gain some insight later on.
+
+> Vini Vidi Vici
