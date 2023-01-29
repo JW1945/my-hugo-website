@@ -1,6 +1,6 @@
 +++
 author = "Frenchie"
-title = "Ambassador"
+title = "Ambassador HTB"
 date = "2023-01-29"
 description = "Ambassador HTB"
 tags = [
@@ -10,10 +10,9 @@ tags = [
 showthedate = false
 +++
 
-## Ambassador HackTheBox
-### Lesson Learnt
-
 While doing manual LFI at grafana endpoint, I tried to exfill sqlite3 db from /var/lib/grafana/grafana.db
+
+<!--more-->
 
 The initial code:
 ```python
@@ -29,4 +28,4 @@ if r.status_code == 200:
         file.write(r.content)
 ```
 
-Use requests.content instead of requests.text
+Use requests.content instead of requests.text for bytes-type data.
