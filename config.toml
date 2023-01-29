@@ -61,17 +61,17 @@ enable = true
 [[params.two.section]]
 img = "/static/frenchie-previews.png"
 title = 'The Duality of Life&#x27; Pursuits'
-body = 'He was a cute, little bundle of joy, with his wrinkled forehead and big, round eyes. His fur was a soft, brindle color, and his ears stood tall and perky.'
+body = 'On this marvelous lantern rite, we pray that the fallen heros may be guided home.'
 
 [[params.two.section]]
 img = "/static/frenchie-lookup.png"
 title = 'Striving for Success and Enjoyment'
-body = 'He couldn&#x27;t wait to run around and explore all the new sights and smells.'
+body = 'Every single wish, no matter how small, is worth seeing to fruition.'
 
 [[params.two.section]]
 img = "/static/frenchie-balls.png"
 title = 'Balancing Rest and Fun'
-body = 'They knew that wherever they went, Frenchie would always be by their side, making every day a little brighter.'
+body = 'We will finally reunite with those we long for on a dreamlike night.'
 
 [params.social]
 twitter = ""
