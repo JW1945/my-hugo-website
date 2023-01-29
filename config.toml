@@ -3,7 +3,7 @@ title = "Frenchie"
 languageCode = "en-us"
 defaultContentLanguage = "en"
 paginate = "7"
-theme = "spectral"
+theme = "spectral-master"
 
 [params]
 fancyTitle = "Finding Home: The Journey to True Freedom" # title for frontpage, may include image
