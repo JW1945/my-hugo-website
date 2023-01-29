@@ -10,7 +10,7 @@ tags = [
 showthedate = false
 +++
 
-# Ambassador HackTheBox
+## Ambassador HackTheBox
 ### Lesson Learnt
 
 While doing manual LFI at grafana endpoint, I tried to exfill sqlite3 db from /var/lib/grafana/grafana.db
