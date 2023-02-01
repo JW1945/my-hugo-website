@@ -28,8 +28,17 @@ if r.status_code == 200:
         file.write(r.content)
 ```
 
-Use requests.content instead of requests.text for bytes-type data.
-[Docs](https://requests.readthedocs.io/en/latest/user/quickstart/#binary-response-content)
+> Use requests.content instead of requests.text for bytes-type data.
+> [Docs](https://requests.readthedocs.io/en/latest/user/quickstart/#binary-response-content)
+
+### Encodings
+When you receive a response, Requests makes a guess at the encoding to use for decoding the response when you access the Response.text attribute. Requests will first check for an encoding in the HTTP header, and if none is present, will use charset_normalizer or chardet to attempt to guess the encoding.
+
+If chardet is installed, requests uses it, however for python3 chardet is no longer a mandatory dependency. The chardet library is an LGPL-licenced dependency and some users of requests cannot depend on mandatory LGPL-licensed dependencies.
+
+When you install requests without specifying [use_chardet_on_py3] extra, and chardet is not already installed, requests uses charset-normalizer (MIT-licensed) to guess the encoding.
+
+The only time Requests will not guess the encoding is if no explicit charset is present in the HTTP headers and the Content-Type header contains text. In this situation, RFC 2616 specifies that the default charset must be ISO-8859-1. Requests follows the specification in this case. If you require a different encoding, you can manually set the Response.encoding property, or use the raw Response.content.
 
 ---
 
