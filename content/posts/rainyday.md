@@ -99,6 +99,7 @@ return h
 
 ---
 ## String Format
+[DOCS](https://docs.python.org/3/library/string.html#format-specification-mini-language)
 ```python
 num = 132546
 print(f"Minimum {num=:,d} per round.")
